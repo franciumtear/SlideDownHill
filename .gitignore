@@ -2,3 +2,6 @@
 /out
 /include
 *.tsbuildinfo
+game.rbxl.lock
+.DS_Store
+game.rbxl

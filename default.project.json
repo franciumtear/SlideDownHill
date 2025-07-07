@@ -25,6 +25,9 @@
 			},
 			"TS": {
 				"$path": "out/shared"
+			},
+			"vehicles": {
+				"$path": "assets/replicated-storage/vehicles"
 			}
 		},
 		"StarterPlayer": {
@@ -40,6 +43,9 @@
 			"$className": "Workspace",
 			"$properties": {
 				"FilteringEnabled": true
+			},
+			"Map":{
+				"$path": "assets/workspace/map.rbxm"
 			}
 		},
 		"HttpService": {

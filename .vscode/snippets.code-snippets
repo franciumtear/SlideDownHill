@@ -1,0 +1,21 @@
+{
+  "Service Template": {
+    "prefix": ["service", "controller", "component"],
+    "description": "Creates a namespace using the filename in PascalCase",
+    "body": [
+      "import { $$assert, $$print } from \"rbxts-transform-debug\";",
+      "",
+      "export namespace ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} {",
+      "    let isStarted = false;",
+      "",
+      "    export const start = () => {",
+      "        $$assert(!isStarted, \"${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}.start() has already been called\");",
+      "",
+      "        isStarted = true;",
+      "",
+      "        $$print(\"${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} started\");",
+      "    }",
+      "}"
+    ]
+  },
+}

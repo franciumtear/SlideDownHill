@@ -2,23 +2,25 @@ interface ReplicatedStorage {
 	TS: Folder & {
 		module: ModuleScript;
 		modules: Folder & {
-			place: ModuleScript;
+			placement: ModuleScript;
 			remotes: Folder & {
 				remotes: ModuleScript;
 			};
 			"vehicle-spawn": ModuleScript;
 		};
 	};
+	assets: Folder & {
+		vehicles: Folder & {
+			Boat: Model & {
+				Part: Part & {
+					OnlyCollideWithPlayers: BoolValue;
+				};
+			};
+		};
+	};
 	rbxts_include: Folder & {
 		Promise: ModuleScript;
 		RuntimeLib: ModuleScript;
-	};
-	vehicles: Folder & {
-		Boat: Model & {
-			Part: Part & {
-				OnlyCollideWithPlayers: BoolValue;
-			};
-		};
 	};
 }
 

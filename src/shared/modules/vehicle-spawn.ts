@@ -20,7 +20,7 @@ export const vehicleList: VehicleData[] = [
 	{
 		vehicle: Vehicle.Boat,
 		name: "Boat",
-		model: ReplicatedStorage.vehicles.Boat,
+		model: ReplicatedStorage.assets.vehicles.Boat,
 	},
 ];
 

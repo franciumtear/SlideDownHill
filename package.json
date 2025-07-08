@@ -39,7 +39,6 @@
     "@rbxts/observers": "^0.3.4",
     "@rbxts/remo": "^1.5.2",
     "@rbxts/services": "^1.5.5",
-    "lune": "^0.4.0",
     "rbxts-transform-debug": "github:roblox-aurora/rbxts-transform-debug"
   }
 }

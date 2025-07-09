@@ -1,6 +1,8 @@
 import { CommandGuard, Register, Command, CenturionType, Guard, CommandContext, Group } from "@rbxts/centurion";
 import { PlacementController } from "client/controllers/placement-controller";
-import { isVehicle } from "shared/modules/vehicle-spawn";
+import { CustomCenturionType } from "shared/modules/centurionType";
+import { remotes } from "shared/modules/remotes/remotes";
+import { isVehicle, Vehicle } from "shared/modules/vehicle-spawn";
 
 @Register({
 	groups: [
@@ -17,18 +19,14 @@ class SpawnCommand {
 		description: "Spawns a vehicle",
 		arguments: [
 			{
-				name: "vehicle",
-				type: CenturionType.String,
+				name: "Vehicle",
+				type: CustomCenturionType.VehicleName,
 				description: "The vehicle to spawn",
 			},
 		],
 	})
-	spawn(ctx: CommandContext, vehicle: string) {
-		if (isVehicle(vehicle)) {
-			PlacementController.startPlacing(vehicle);
-		} else {
-			ctx.error(`Invalid state: ${vehicle}`);
-		}
+	spawn(ctx: CommandContext, vehicle: Vehicle) {
+		PlacementController.startPlacing(vehicle);
 	}
 
 	@Command({
@@ -38,5 +36,14 @@ class SpawnCommand {
 	})
 	stop(ctx: CommandContext) {
 		PlacementController.stopPlacing();
+	}
+
+	@Command({
+		name: "move",
+		description: "Moves spawned boat",
+		arguments: [],
+	})
+	move(ctx: CommandContext) {
+		remotes.move.fire();
 	}
 }

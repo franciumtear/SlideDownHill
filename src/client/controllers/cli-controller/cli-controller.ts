@@ -2,6 +2,7 @@ import { Centurion } from "@rbxts/centurion";
 import { CenturionUI } from "@rbxts/centurion-ui";
 import { ScriptContext } from "@rbxts/services";
 import { $error, $print } from "rbxts-transform-debug";
+import { vehicleCenturionType } from "shared/modules/centurionType";
 
 export namespace CliController {
 	let isStarted = false;
@@ -21,6 +22,7 @@ export namespace CliController {
 			const commandContainer = script.Parent?.FindFirstChild("commands");
 			assert(commandContainer !== undefined);
 			client.registry.load(commandContainer);
+			client.registry.registerType(vehicleCenturionType);
 
 			client
 				.start()

@@ -1,6 +1,7 @@
 import { Centurion } from "@rbxts/centurion";
 import { ServerScriptService } from "@rbxts/services";
 import { $error, $print } from "rbxts-transform-debug";
+import { vehicleCenturionType } from "shared/modules/centurionType";
 
 export namespace CliService {
 	let isStarted = false;
@@ -19,6 +20,7 @@ export namespace CliService {
 		// Load all child ModuleScripts under each container
 		const commandContainer = ServerScriptService.TS.services["cli-service"].commands;
 		server.registry.load(commandContainer);
+		server.registry.registerType(vehicleCenturionType);
 
 		// const typeContainer = ReplicatedStorage.types;
 		// server.registry.load(typeContainer);

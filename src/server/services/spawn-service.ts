@@ -4,6 +4,7 @@ import { remotes } from "../../shared/modules/remotes/remotes";
 import { Workspace } from "@rbxts/services";
 import { isPlaceable } from "shared/modules/placement";
 import { observeCharacter } from "@rbxts/observers";
+import { MovementService } from "./movement-service";
 
 export namespace SpawnService {
 	let isStarted = false;
@@ -16,7 +17,7 @@ export namespace SpawnService {
 		$print("SpawnService started");
 	};
 
-	const spawned = new Map<Player, Instance>();
+	const spawned = new Map<Player, Model>();
 
 	const removeOld = (player: Player) => {
 		const oldVehicle = spawned.get(player);
@@ -35,6 +36,13 @@ export namespace SpawnService {
 
 			removeOld(player);
 			spawned.set(player, model);
+		}
+	});
+
+	remotes.move.connect((player) => {
+		const vehicle = spawned.get(player);
+		if (vehicle) {
+			MovementService.moveVehicle(vehicle);
 		}
 	});
 

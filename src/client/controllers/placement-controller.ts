@@ -38,6 +38,12 @@ export namespace PlacementController {
 					const placing = _placing();
 
 					if (placing) {
+						const vehicleData = getVehicleData(placing);
+
+						const params = new RaycastParams();
+						params.AddToFilter(character);
+						params.AddToFilter(placeArea);
+
 						const part = Make("Part", {
 							Parent: Workspace,
 							Anchored: true,
@@ -45,8 +51,25 @@ export namespace PlacementController {
 							Transparency: 0.5,
 							Color: new Color3(0.69, 0.69, 0.69),
 							CanCollide: false,
-							Size: getVehicleData(placing).model.GetBoundingBox()[1],
+							Size: vehicleData.model.GetBoundingBox()[1],
 						});
+
+						maid.GiveTask(part);
+						params.AddToFilter(part);
+
+						const ghostModel = vehicleData.model.Clone();
+						ghostModel.Parent = Workspace;
+
+						ghostModel.GetDescendants().forEach((desc) => {
+							if (desc.IsA("BasePart")) {
+								desc.Anchored = true;
+								desc.CanCollide = false;
+								desc.Transparency = 0.4;
+								params.AddToFilter(desc);
+							}
+						});
+
+						maid.GiveTask(ghostModel);
 
 						maid.GiveTask(
 							RunService.Heartbeat.Connect(() => {
@@ -54,14 +77,15 @@ export namespace PlacementController {
 								const mouse = UserInputService.GetMouseLocation();
 								const mouseRay = camera?.ScreenPointToRay(mouse.X, mouse.Y);
 
-								const params = new RaycastParams();
-								params.AddToFilter(part);
-								params.AddToFilter(character);
-								params.AddToFilter(placeArea);
-
 								const hit = Workspace.Raycast(mouseRay.Origin, mouseRay.Direction.mul(10000), params);
 								if (hit) {
-									part.CFrame = new CFrame(hit.Position);
+									const originalY = ghostModel.GetPivot().Position.Y;
+									const newPosition = new Vector3(hit.Position.X, originalY, hit.Position.Z);
+									const newCFrame = new CFrame(newPosition);
+
+									part.CFrame = newCFrame;
+									ghostModel.PivotTo(newCFrame);
+
 									if (isPlaceable(hit.Position, placing)) {
 										part.Color = new Color3(0, 1, 0.05);
 									} else {
@@ -83,8 +107,6 @@ export namespace PlacementController {
 								}
 							}),
 						);
-
-						maid.GiveTask(part);
 					}
 
 					return () => maid.DoCleaning();

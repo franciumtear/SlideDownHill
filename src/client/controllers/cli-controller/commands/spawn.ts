@@ -1,8 +1,16 @@
-import { CommandGuard, Register, Command, CenturionType, Guard, CommandContext } from "@rbxts/centurion";
+import { CommandGuard, Register, Command, CenturionType, Guard, CommandContext, Group } from "@rbxts/centurion";
 import { PlacementController } from "client/controllers/placement-controller";
 import { isVehicle } from "shared/modules/vehicle-spawn";
 
-@Register()
+@Register({
+	groups: [
+		{
+			name: "vehicle",
+			description: "Vehicle commands",
+		},
+	],
+})
+@Group("vehicle")
 class SpawnCommand {
 	@Command({
 		name: "spawn",
@@ -20,7 +28,15 @@ class SpawnCommand {
 			PlacementController.startPlacing(vehicle);
 		} else {
 			ctx.error(`Invalid state: ${vehicle}`);
-			return;
 		}
+	}
+
+	@Command({
+		name: "stop",
+		description: "Stops spawning",
+		arguments: [],
+	})
+	stop(ctx: CommandContext) {
+		PlacementController.stopPlacing();
 	}
 }

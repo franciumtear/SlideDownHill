@@ -3,7 +3,6 @@ import { Vehicle, getVehicleData } from "shared/modules/vehicle-spawn";
 import Make from "@rbxts/make";
 
 export const placeArea = Workspace.Map.PlacingGround.placeArea;
-assert(placeArea.IsA("BasePart"));
 
 export const isPlaceable = (target: Vector3, vehicle: Vehicle) => {
 	const areaHalf = placeArea.Size.div(2);

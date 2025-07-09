@@ -1,9 +1,9 @@
 import { $assert, $print } from "rbxts-transform-debug";
 import { getVehicleData, Vehicle } from "shared/modules/vehicle-spawn";
 import { remotes } from "../../shared/modules/remotes/remotes";
-import { Players, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { isPlaceable } from "shared/modules/placement";
-import { effect } from "@rbxts/charm";
+import { observeCharacter } from "@rbxts/observers";
 
 export namespace SpawnService {
 	let isStarted = false;
@@ -16,7 +16,15 @@ export namespace SpawnService {
 		$print("SpawnService started");
 	};
 
-	const spawned: Record<string, Instance> = {};
+	const spawned = new Map<Player, Instance>();
+
+	const removeOld = (player: Player) => {
+		const oldVehicle = spawned.get(player);
+		if (oldVehicle) {
+			oldVehicle.Destroy();
+			spawned.delete(player);
+		}
+	};
 
 	remotes.spawn.connect((player: Player, vehicle: Vehicle, position: Vector3) => {
 		if (isPlaceable(position, vehicle)) {
@@ -25,26 +33,12 @@ export namespace SpawnService {
 			model.Parent = Workspace;
 			model.MoveTo(position);
 
-			if (player.Name in spawned) {
-				const oldVehicle = spawned[player.Name];
-				oldVehicle.Destroy();
-				spawned[player.Name] = model;
-				$print(spawned);
-			} else {
-				spawned[player.Name] = model;
-				$print(spawned);
-			}
+			removeOld(player);
+			spawned.set(player, model);
 		}
 	});
 
-	Players.PlayerRemoving.Connect((player) => {
-		player.CharacterRemoving.Connect((_) => {
-			if (player.Name in spawned) {
-				const oldVehicle = spawned[player.Name];
-				oldVehicle.Destroy();
-				delete spawned[player.Name];
-				$print(spawned);
-			}
-		});
+	observeCharacter((player, _) => {
+		return () => removeOld(player);
 	});
 }

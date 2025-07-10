@@ -2,7 +2,7 @@ import { atom, effect } from "@rbxts/charm";
 import Maid from "@rbxts/maid";
 import Make from "@rbxts/make";
 import { observeCharacter } from "@rbxts/observers";
-import { Players, RunService, Workspace, UserInputService } from "@rbxts/services";
+import { Players, RunService, Workspace, ContextActionService, HttpService, UserInputService } from "@rbxts/services";
 import { $assert, $print } from "rbxts-transform-debug";
 import { isPlaceable, placeArea } from "shared/modules/placement";
 import { remotes } from "shared/modules/remotes/remotes";
@@ -95,18 +95,25 @@ export namespace PlacementController {
 							}),
 						);
 
-						maid.GiveTask(
-							UserInputService.InputBegan.Connect((input, gameProcessed) => {
-								if (gameProcessed) return;
+						const actionName = HttpService.GenerateGUID(false);
+
+						ContextActionService.BindAction(
+							actionName,
+							(_, inputState) => {
 								if (
-									input.UserInputType === Enum.UserInputType.MouseButton1 &&
+									inputState === Enum.UserInputState.Begin &&
 									isPlaceable(part.CFrame.Position, placing)
 								) {
 									remotes.spawn(placing, part.CFrame.Position);
 									_placing(undefined);
 								}
-							}),
+							},
+							false,
+							Enum.UserInputType.MouseButton1,
+							Enum.UserInputType.Touch,
 						);
+
+						maid.GiveTask(() => ContextActionService.UnbindAction(actionName));
 					}
 
 					return () => maid.DoCleaning();

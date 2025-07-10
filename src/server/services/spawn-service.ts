@@ -27,7 +27,7 @@ export namespace SpawnService {
 		}
 	};
 
-	remotes.spawn.connect((player: Player, vehicle: Vehicle, position: Vector3) => {
+	remotes.spawn.connect((player, vehicle, position) => {
 		if (isPlaceable(position, vehicle)) {
 			const vehicleData = getVehicleData(vehicle);
 			const model = vehicleData.model.Clone();
@@ -46,7 +46,7 @@ export namespace SpawnService {
 		}
 	});
 
-	observeCharacter((player, _) => {
+	observeCharacter((player) => {
 		return () => removeOld(player);
 	});
 }

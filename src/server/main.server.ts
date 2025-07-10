@@ -1,3 +1,7 @@
-import { makeHello } from "shared/module";
+import { CliService } from "./services/cli-service/cli-service";
+import { MovementService } from "./services/movement-service";
+import { SpawnService } from "./services/spawn-service";
 
-print(makeHello("main.server.ts"));
+CliService.start();
+SpawnService.start();
+MovementService.start();

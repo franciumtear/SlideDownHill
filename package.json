@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "rbxtsc",
-    "watch": "rbxtsc -w"
+    "build": "rbxts-build build",
+    "watch": "rbxts-build watch",
+    "compile": "rbxts-build compile",
+    "open": "rbxts-build open",
+    "start": "rbxts-build start",
+    "stop": "rbxts-build stop",
+    "sync": "rbxts-build sync"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +25,20 @@
     "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-roblox-ts": "^0.0.36",
     "prettier": "^3.6.2",
+    "rbxts-build": "^2.4.0",
     "roblox-ts": "^3.0.0",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@rbxts/centurion": "^1.0.1",
+    "@rbxts/centurion-ui": "^1.0.8",
+    "@rbxts/charm": "^0.10.0",
+    "@rbxts/maid": "^1.1.0",
+    "@rbxts/make": "^1.0.6",
+    "@rbxts/object-utils": "^1.0.4",
+    "@rbxts/observers": "^0.3.4",
+    "@rbxts/remo": "^1.5.2",
+    "@rbxts/services": "^1.5.5",
+    "rbxts-transform-debug": "github:roblox-aurora/rbxts-transform-debug"
   }
 }

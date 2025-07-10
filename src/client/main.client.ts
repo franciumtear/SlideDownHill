@@ -1,3 +1,5 @@
-import { makeHello } from "shared/module";
+import { CliController } from "./controllers/cli-controller/cli-controller";
+import { PlacementController } from "./controllers/placement-controller";
 
-print(makeHello("main.client.ts"));
+CliController.start();
+PlacementController.start();
